@@ -12,11 +12,20 @@ import (
 
 type Downloader struct {
 	url     string
+	timeout time.Duration
 	retries int
 }
 
 func New(url string) *Downloader {
-	return &Downloader{url, 3}
+	return &Downloader{url, 5 * time.Second, 3}
+}
+
+func (self *Downloader) Timeout(timeout time.Duration) *Downloader {
+	if timeout > 0 {
+		self.timeout = timeout
+	}
+
+	return self
 }
 
 func (self *Downloader) Retries(i int) *Downloader {

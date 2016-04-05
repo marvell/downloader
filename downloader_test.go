@@ -2,6 +2,7 @@ package downloader
 
 import (
 	"testing"
+	"time"
 )
 
 const (
@@ -16,7 +17,7 @@ func TestSaveToTempFile(t *testing.T) {
 	}
 	t.Logf("downloaded file: %s", file)
 
-	file, err = New(wrongUrl).Retries(5).SaveToTempFile()
+	file, err = New(wrongUrl).Timeout(time.Second).Retries(5).SaveToTempFile()
 	if err == nil {
 		t.Fail()
 	}
