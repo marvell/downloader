@@ -1,6 +1,8 @@
 package downloader
 
 import (
+	"os"
+	"path"
 	"testing"
 	"time"
 )
@@ -23,6 +25,21 @@ func TestSaveToTempFile(t *testing.T) {
 	}
 
 	if file != "" {
+		t.Fail()
+	}
+}
+
+func TestSaveToFile(t *testing.T) {
+	filename := path.Join(os.TempDir(), "downloader_test")
+
+	err := New(rightUrl).SaveToFile(filename)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("downloaded file: %s", filename)
+
+	err = New(wrongUrl).Timeout(time.Second).Retries(5).SaveToFile(filename)
+	if err == nil {
 		t.Fail()
 	}
 }

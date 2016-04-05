@@ -7,6 +7,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"path"
 	"time"
 )
 
@@ -43,6 +44,20 @@ func (self *Downloader) SaveToTempFile() (string, error) {
 	}
 
 	return file.Name(), nil
+}
+
+func (self *Downloader) SaveToFile(filename string) error {
+	file, err := self.download()
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(path.Dir(filename), 0755)
+	if err != nil {
+		return err
+	}
+
+	return os.Rename(file.Name(), filename)
 }
 
 func (self *Downloader) download() (*os.File, error) {
