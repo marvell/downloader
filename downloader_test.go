@@ -20,7 +20,7 @@ func TestSaveToTempFile(t *testing.T) {
 	t.Logf("downloaded file: %s", file)
 
 	file, err = New(wrongUrl).Timeout(time.Second).Retries(5).SaveToTempFile()
-	if err == nil {
+	if err != ErrNotFound {
 		t.Fail()
 	}
 
@@ -39,7 +39,7 @@ func TestSaveToFile(t *testing.T) {
 	t.Logf("downloaded file: %s", filename)
 
 	err = New(wrongUrl).Timeout(time.Second).Retries(5).SaveToFile(filename)
-	if err == nil {
+	if err != ErrNotFound {
 		t.Fail()
 	}
 }

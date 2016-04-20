@@ -1,6 +1,7 @@
 package downloader
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -10,6 +11,8 @@ import (
 	"path"
 	"time"
 )
+
+var ErrNotFound = errors.New("file not found")
 
 type Downloader struct {
 	url     string
@@ -77,6 +80,10 @@ func (self *Downloader) download() (*os.File, error) {
 		}
 
 		if resp.StatusCode != http.StatusOK {
+			if resp.StatusCode == http.StatusNotFound {
+				return nil, ErrNotFound
+			}
+
 			lerr = fmt.Errorf("wrong status code: %d", resp.StatusCode)
 			continue
 		}
