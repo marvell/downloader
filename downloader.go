@@ -60,7 +60,7 @@ func (self *Downloader) SaveToFile(filename string) error {
 		return err
 	}
 
-	return os.Rename(file.Name(), filename)
+	return copyFile(file.Name(), filename)
 }
 
 func (self *Downloader) download() (*os.File, error) {
