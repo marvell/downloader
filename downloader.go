@@ -54,6 +54,7 @@ func (self *Downloader) SaveToFile(filename string) error {
 	if err != nil {
 		return err
 	}
+	defer os.Remove(file.Name())
 
 	err = os.MkdirAll(path.Dir(filename), 0755)
 	if err != nil {
